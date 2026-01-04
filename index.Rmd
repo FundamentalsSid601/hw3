@@ -1,0 +1,126 @@
+---
+title: "Data Cleaning and Formatting"
+author: "Sidhant Sharma"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+data_1 <- read.csv("Infant mortality rate.csv")
+data_2 <- read.csv("Life expectancy at birth.csv")
+data_3 <- read.csv("Maternal mortality ratio.csv")
+```
+
+
+### Initial Inspection
+
+```{r}
+head(data_1); tail(data_1); str(data_1); summary(data_1)
+head(data_2); tail(data_2); str(data_2); summary(data_2)
+head(data_3); tail(data_3); str(data_3); summary(data_3)
+```
+
+
+### Keep only required columns
+```{r}
+data_1_new <- data_1[, c("name", "deaths.1000.live.births", "region")]
+data_2_new <- data_2[, c("name", "years", "region")]
+data_3_new <- data_3[, c("name", "deaths.100000.live.births", "region")]
+
+head(data_1_new)
+head(data_2_new)
+head(data_3_new)
+```
+
+### Trim Whitespaces 
+
+```{r}
+data_1_new$name <- trimws(data_1_new$name)
+data_1_new$region <- trimws(data_1_new$region)
+
+data_2_new$name <- trimws(data_2_new$name)
+data_2_new$region <- trimws(data_2_new$region)
+
+data_3_new$name <- trimws(data_3_new$name)
+data_3_new$region <- trimws(data_3_new$region)
+```
+
+
+#### Checking for NA Values
+
+```{r}
+# NA counts per column
+colSums(is.na(data_1_new))
+colSums(is.na(data_2_new))
+colSums(is.na(data_3_new))
+```
+
+
+
+### Ensure numeric columns are numeric
+
+```{r}
+data_1_new$deaths.1000.live.births <- as.numeric(data_1_new$deaths.1000.live.births)
+data_2_new$years <- as.numeric(data_2_new$years)
+data_3_new$deaths.100000.live.births <- as.numeric(data_3_new$deaths.100000.live.births)
+```
+
+### Rename columns (clean, analysis-ready)
+
+```{r}
+names(data_1_new) <- c("country", "infant_mortality_per_1000", "region")
+names(data_2_new) <- c("country", "life_expectancy_years", "region")
+names(data_3_new) <- c("country", "maternal_mortality_per_100k", "region")
+```
+
+
+### Verify final cleaned structures
+
+```{r}
+str(data_1_new)
+str(data_2_new)
+str(data_3_new)
+```
+
+
+### Save cleaned datasets (RDS + CSV)
+
+```{r}
+saveRDS(data_1_new, "infant_mortality_clean.rds")
+saveRDS(data_2_new, "life_expectancy_clean.rds")
+saveRDS(data_3_new, "maternal_mortality_clean.rds")
+
+write.csv(data_1_new, "infant_mortality_clean.csv", row.names = FALSE, na = "")
+write.csv(data_2_new, "life_expectancy_clean.csv", row.names = FALSE, na = "")
+write.csv(data_3_new, "maternal_mortality_clean.csv", row.names = FALSE, na = "")
+```
+
+
+### Re-open each file and verify types using str()
+
+#### RDS
+
+```{r}
+imr_rds <- readRDS("infant_mortality_clean.rds")
+le_rds <- readRDS("life_expectancy_clean.rds")
+mmr_rds <- readRDS("maternal_mortality_clean.rds")
+
+str(imr_rds)
+str(le_rds)
+str(mmr_rds)
+```
+
+#### CVS
+
+```{r}
+imr_csv <- read.csv("infant_mortality_clean.csv", stringsAsFactors = FALSE)
+le_csv <- read.csv("life_expectancy_clean.csv", stringsAsFactors = FALSE)
+mmr_csv <- read.csv("maternal_mortality_clean.csv", stringsAsFactors = FALSE)
+
+str(imr_csv)
+str(le_csv)
+str(mmr_csv)
+```
+
