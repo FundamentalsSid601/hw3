@@ -13,38 +13,66 @@ data_2 <- read.csv("Life expectancy at birth.csv")
 data_3 <- read.csv("Maternal mortality ratio.csv")
 ```
 
+#### Investigating Column Names
+
+```{r}
+names(data_1)
+names(data_2)
+names(data_3)
+```
+
+
+### Fixing Column Names
+
+```{r}
+raw_lines_infant <- readLines("Infant mortality rate.csv")
+raw_lines_infant[1] <- "name,slug,deaths_per_1000,date_of_information,ranking,region"
+infant <- read.csv(text = raw_lines_infant)
+```
+
+
+```{r}
+raw_lines <- readLines("Maternal mortality ratio.csv")
+raw_lines[1] <- "name,slug,deaths_per_100000,date_of_information,ranking,region"
+maternal <- read.csv(text = raw_lines)
+```
+
+
+```{r}
+life_exp <- data_2
+```
 
 ### Initial Inspection
 
 ```{r}
-head(data_1); tail(data_1); str(data_1); summary(data_1)
-head(data_2); tail(data_2); str(data_2); summary(data_2)
-head(data_3); tail(data_3); str(data_3); summary(data_3)
+head(infant); tail(infant); str(infant); summary(infant)
+head(life_exp); tail(life_exp); str(life_exp); summary(life_exp)
+head(maternal); tail(maternal); str(maternal); summary(maternal)
 ```
 
 
 ### Keep only required columns
 ```{r}
-data_1_new <- data_1[, c("name", "deaths.1000.live.births", "region")]
-data_2_new <- data_2[, c("name", "years", "region")]
-data_3_new <- data_3[, c("name", "deaths.100000.live.births", "region")]
+infant_new <- infant[, c("name", "deaths_per_1000", "region")]
+life_exp_new <- life_exp[, c("name", "years", "region")]
+maternal_new <- maternal[, c("name", "deaths_per_100000", "region")]
 
-head(data_1_new)
-head(data_2_new)
-head(data_3_new)
+head(infant_new)
+head(life_exp_new)
+head(maternal_new)
 ```
 
 ### Trim Whitespaces 
 
 ```{r}
-data_1_new$name <- trimws(data_1_new$name)
-data_1_new$region <- trimws(data_1_new$region)
+infant_new$name <- trimws(infant_new$name)
+infant_new$region <- trimws(infant_new$region)
 
-data_2_new$name <- trimws(data_2_new$name)
-data_2_new$region <- trimws(data_2_new$region)
+life_exp_new$name <- trimws(life_exp_new$name)
+life_exp_new$region <- trimws(life_exp_new$region)
 
-data_3_new$name <- trimws(data_3_new$name)
-data_3_new$region <- trimws(data_3_new$region)
+maternal_new$name <- trimws(maternal_new$name)
+maternal_new$region <- trimws(maternal_new$region)
 ```
 
 
@@ -52,49 +80,39 @@ data_3_new$region <- trimws(data_3_new$region)
 
 ```{r}
 # NA counts per column
-colSums(is.na(data_1_new))
-colSums(is.na(data_2_new))
-colSums(is.na(data_3_new))
+colSums(is.na(infant_new))
+colSums(is.na(life_exp_new))
+colSums(is.na(maternal_new))
 ```
-
 
 
 ### Ensure numeric columns are numeric
 
 ```{r}
-data_1_new$deaths.1000.live.births <- as.numeric(data_1_new$deaths.1000.live.births)
-data_2_new$years <- as.numeric(data_2_new$years)
-data_3_new$deaths.100000.live.births <- as.numeric(data_3_new$deaths.100000.live.births)
+infant_new$deaths.1000.live.births <- as.numeric(infant_new$deaths_per_1000)
+life_exp_new$years <- as.numeric(life_exp_new$years)
+maternal_new$deaths_per_100000 <- as.numeric(maternal_new$deaths_per_100000)
 ```
 
-### Rename columns (clean, analysis-ready)
+### Rename columns to more appopriate names
 
 ```{r}
-names(data_1_new) <- c("country", "infant_mortality_per_1000", "region")
-names(data_2_new) <- c("country", "life_expectancy_years", "region")
-names(data_3_new) <- c("country", "maternal_mortality_per_100k", "region")
-```
-
-
-### Verify final cleaned structures
-
-```{r}
-str(data_1_new)
-str(data_2_new)
-str(data_3_new)
+names(infant_new) <- c("country", "infant_mortality_per_1000", "region")
+names(life_exp_new) <- c("country", "life_expectancy_years", "region")
+names(maternal_new) <- c("country", "maternal_mortality_per_100k", "region")
 ```
 
 
 ### Save cleaned datasets (RDS + CSV)
 
 ```{r}
-saveRDS(data_1_new, "infant_mortality_clean.rds")
-saveRDS(data_2_new, "life_expectancy_clean.rds")
-saveRDS(data_3_new, "maternal_mortality_clean.rds")
+saveRDS(infant_new, "infant_mortality_clean.rds")
+saveRDS(life_exp_new, "life_expectancy_clean.rds")
+saveRDS(maternal_new, "maternal_mortality_clean.rds")
 
-write.csv(data_1_new, "infant_mortality_clean.csv", row.names = FALSE, na = "")
-write.csv(data_2_new, "life_expectancy_clean.csv", row.names = FALSE, na = "")
-write.csv(data_3_new, "maternal_mortality_clean.csv", row.names = FALSE, na = "")
+write.csv(infant_new, "infant_mortality_clean.csv", row.names = FALSE, na = "")
+write.csv(life_exp_new, "life_expectancy_clean.csv", row.names = FALSE, na = "")
+write.csv(maternal_new, "maternal_mortality_clean.csv", row.names = FALSE, na = "")
 ```
 
 

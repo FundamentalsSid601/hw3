@@ -1629,41 +1629,69 @@ display: none;
 <pre class="r"><code>data_1 &lt;- read.csv(&quot;Infant mortality rate.csv&quot;)
 data_2 &lt;- read.csv(&quot;Life expectancy at birth.csv&quot;)
 data_3 &lt;- read.csv(&quot;Maternal mortality ratio.csv&quot;)</code></pre>
+<div id="investigating-column-names" class="section level4">
+<h4>Investigating Column Names</h4>
+<pre class="r"><code>names(data_1)</code></pre>
+<pre><code>## [1] &quot;name&quot;                &quot;slug&quot;                &quot;deaths.1&quot;           
+## [4] &quot;X000.live.births&quot;    &quot;date_of_information&quot; &quot;ranking&quot;            
+## [7] &quot;region&quot;</code></pre>
+<pre class="r"><code>names(data_2)</code></pre>
+<pre><code>## [1] &quot;name&quot;                &quot;slug&quot;                &quot;years&quot;              
+## [4] &quot;date_of_information&quot; &quot;ranking&quot;             &quot;region&quot;</code></pre>
+<pre class="r"><code>names(data_3)</code></pre>
+<pre><code>## [1] &quot;name&quot;                &quot;slug&quot;                &quot;deaths.100&quot;         
+## [4] &quot;X000.live.births&quot;    &quot;date_of_information&quot; &quot;ranking&quot;            
+## [7] &quot;region&quot;</code></pre>
+</div>
+<div id="fixing-column-names" class="section level3">
+<h3>Fixing Column Names</h3>
+<pre class="r"><code>raw_lines_infant &lt;- readLines(&quot;Infant mortality rate.csv&quot;)</code></pre>
+<pre><code>## Warning in readLines(&quot;Infant mortality rate.csv&quot;): incomplete final line found
+## on &#39;Infant mortality rate.csv&#39;</code></pre>
+<pre class="r"><code>raw_lines_infant[1] &lt;- &quot;name,slug,deaths_per_1000,date_of_information,ranking,region&quot;
+infant &lt;- read.csv(text = raw_lines_infant)</code></pre>
+<pre class="r"><code>raw_lines &lt;- readLines(&quot;Maternal mortality ratio.csv&quot;)</code></pre>
+<pre><code>## Warning in readLines(&quot;Maternal mortality ratio.csv&quot;): incomplete final line
+## found on &#39;Maternal mortality ratio.csv&#39;</code></pre>
+<pre class="r"><code>raw_lines[1] &lt;- &quot;name,slug,deaths_per_100000,date_of_information,ranking,region&quot;
+maternal &lt;- read.csv(text = raw_lines)</code></pre>
+<pre class="r"><code>life_exp &lt;- data_2</code></pre>
+</div>
 <div id="initial-inspection" class="section level3">
 <h3>Initial Inspection</h3>
-<pre class="r"><code>head(data_1); tail(data_1); str(data_1); summary(data_1)</code></pre>
+<pre class="r"><code>head(infant); tail(infant); str(infant); summary(infant)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths.1000.live.births"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"afghanistan","3":"101.3","4":"2024","5":"1","6":"South Asia","_rn_":"1"},{"1":"Somalia","2":"somalia","3":"83.6","4":"2024","5":"2","6":"Africa","_rn_":"2"},{"1":"Central African Republic","2":"central-african-republic","3":"80.5","4":"2024","5":"3","6":"Africa","_rn_":"3"},{"1":"Equatorial Guinea","2":"equatorial-guinea","3":"77.4","4":"2024","5":"4","6":"Africa","_rn_":"4"},{"1":"Sierra Leone","2":"sierra-leone","3":"71.2","4":"2024","5":"5","6":"Africa","_rn_":"5"},{"1":"Niger","2":"niger","3":"64.3","4":"2024","5":"6","6":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths_per_1000"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"afghanistan","3":"101.3","4":"2024","5":"1","6":"South Asia","_rn_":"1"},{"1":"Somalia","2":"somalia","3":"83.6","4":"2024","5":"2","6":"Africa","_rn_":"2"},{"1":"Central African Republic","2":"central-african-republic","3":"80.5","4":"2024","5":"3","6":"Africa","_rn_":"3"},{"1":"Equatorial Guinea","2":"equatorial-guinea","3":"77.4","4":"2024","5":"4","6":"Africa","_rn_":"4"},{"1":"Sierra Leone","2":"sierra-leone","3":"71.2","4":"2024","5":"5","6":"Africa","_rn_":"5"},{"1":"Niger","2":"niger","3":"64.3","4":"2024","5":"6","6":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths.1000.live.births"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Japan","2":"japan","3":"1.9","4":"2024","5":"222","6":"East and Southeast Asia","_rn_":"222"},{"1":"Norway","2":"norway","3":"1.8","4":"2024","5":"223","6":"Europe","_rn_":"223"},{"1":"Monaco","2":"monaco","3":"1.7","4":"2024","5":"224","6":"Europe","_rn_":"224"},{"1":"Iceland","2":"iceland","3":"1.6","4":"2024","5":"225","6":"Europe","_rn_":"225"},{"1":"Singapore","2":"singapore","3":"1.5","4":"2024","5":"226","6":"East and Southeast Asia","_rn_":"226"},{"1":"Slovenia","2":"slovenia","3":"1.5","4":"2024","5":"227","6":"Europe","_rn_":"227"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths_per_1000"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Japan","2":"japan","3":"1.9","4":"2024","5":"222","6":"East and Southeast Asia","_rn_":"222"},{"1":"Norway","2":"norway","3":"1.8","4":"2024","5":"223","6":"Europe","_rn_":"223"},{"1":"Monaco","2":"monaco","3":"1.7","4":"2024","5":"224","6":"Europe","_rn_":"224"},{"1":"Iceland","2":"iceland","3":"1.6","4":"2024","5":"225","6":"Europe","_rn_":"225"},{"1":"Singapore","2":"singapore","3":"1.5","4":"2024","5":"226","6":"East and Southeast Asia","_rn_":"226"},{"1":"Slovenia","2":"slovenia","3":"1.5","4":"2024","5":"227","6":"Europe","_rn_":"227"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre><code>## &#39;data.frame&#39;:    227 obs. of  6 variables:
-##  $ name                   : chr  &quot;Afghanistan&quot; &quot;Somalia&quot; &quot;Central African Republic&quot; &quot;Equatorial Guinea&quot; ...
-##  $ slug                   : chr  &quot;afghanistan&quot; &quot;somalia&quot; &quot;central-african-republic&quot; &quot;equatorial-guinea&quot; ...
-##  $ deaths.1000.live.births: num  101.3 83.6 80.5 77.4 71.2 ...
-##  $ date_of_information    : int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
-##  $ ranking                : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ region                 : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
-<pre><code>##      name               slug           deaths.1000.live.births
-##  Length:227         Length:227         Min.   :  1.50         
-##  Class :character   Class :character   1st Qu.:  5.75         
-##  Mode  :character   Mode  :character   Median : 11.70         
-##                                        Mean   : 18.70         
-##                                        3rd Qu.: 26.50         
-##                                        Max.   :101.30         
-##  date_of_information    ranking         region         
-##  Min.   :2024        Min.   :  1.0   Length:227        
-##  1st Qu.:2024        1st Qu.: 57.5   Class :character  
-##  Median :2024        Median :114.0   Mode  :character  
-##  Mean   :2024        Mean   :114.0                     
-##  3rd Qu.:2024        3rd Qu.:170.5                     
-##  Max.   :2024        Max.   :227.0</code></pre>
-<pre class="r"><code>head(data_2); tail(data_2); str(data_2); summary(data_2)</code></pre>
+##  $ name               : chr  &quot;Afghanistan&quot; &quot;Somalia&quot; &quot;Central African Republic&quot; &quot;Equatorial Guinea&quot; ...
+##  $ slug               : chr  &quot;afghanistan&quot; &quot;somalia&quot; &quot;central-african-republic&quot; &quot;equatorial-guinea&quot; ...
+##  $ deaths_per_1000    : num  101.3 83.6 80.5 77.4 71.2 ...
+##  $ date_of_information: int  2024 2024 2024 2024 2024 2024 2024 2024 2024 2024 ...
+##  $ ranking            : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ region             : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
+<pre><code>##      name               slug           deaths_per_1000  date_of_information
+##  Length:227         Length:227         Min.   :  1.50   Min.   :2024       
+##  Class :character   Class :character   1st Qu.:  5.75   1st Qu.:2024       
+##  Mode  :character   Mode  :character   Median : 11.70   Median :2024       
+##                                        Mean   : 18.70   Mean   :2024       
+##                                        3rd Qu.: 26.50   3rd Qu.:2024       
+##                                        Max.   :101.30   Max.   :2024       
+##     ranking         region         
+##  Min.   :  1.0   Length:227        
+##  1st Qu.: 57.5   Class :character  
+##  Median :114.0   Mode  :character  
+##  Mean   :114.0                     
+##  3rd Qu.:170.5                     
+##  Max.   :227.0</code></pre>
+<pre class="r"><code>head(life_exp); tail(life_exp); str(life_exp); summary(life_exp)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["years"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Monaco","2":"monaco","3":"89.8","4":"2024","5":"1","6":"Europe","_rn_":"1"},{"1":"Singapore","2":"singapore","3":"86.7","4":"2024","5":"2","6":"East and Southeast Asia","_rn_":"2"},{"1":"Macau","2":"macau","3":"85.3","4":"2024","5":"3","6":"East and Southeast Asia","_rn_":"3"},{"1":"Japan","2":"japan","3":"85.2","4":"2024","5":"4","6":"East and Southeast Asia","_rn_":"4"},{"1":"Canada","2":"canada","3":"84.2","4":"2024","5":"5","6":"North America","_rn_":"5"},{"1":"San Marino","2":"san-marino","3":"84.2","4":"2024","5":"6","6":"Europe","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
@@ -1695,113 +1723,114 @@ data_3 &lt;- read.csv(&quot;Maternal mortality ratio.csv&quot;)</code></pre>
 ##  Mean   :114.0                     
 ##  3rd Qu.:170.5                     
 ##  Max.   :227.0</code></pre>
-<pre class="r"><code>head(data_3); tail(data_3); str(data_3); summary(data_3)</code></pre>
+<pre class="r"><code>head(maternal); tail(maternal); str(maternal); summary(maternal)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths.100000.live.births"],"name":[3],"type":["int"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Nigeria","2":"nigeria","3":"993","4":"2023","5":"1","6":"Africa","_rn_":"1"},{"1":"Chad","2":"chad","3":"748","4":"2023","5":"2","6":"Africa","_rn_":"2"},{"1":"South Sudan","2":"south-sudan","3":"692","4":"2023","5":"3","6":"Africa","_rn_":"3"},{"1":"Central African Republic","2":"central-african-republic","3":"692","4":"2023","5":"4","6":"Africa","_rn_":"4"},{"1":"Liberia","2":"liberia","3":"628","4":"2023","5":"5","6":"Africa","_rn_":"5"},{"1":"Somalia","2":"somalia","3":"563","4":"2023","5":"6","6":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths_per_100000"],"name":[3],"type":["int"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Nigeria","2":"nigeria","3":"993","4":"2023","5":"1","6":"Africa","_rn_":"1"},{"1":"Chad","2":"chad","3":"748","4":"2023","5":"2","6":"Africa","_rn_":"2"},{"1":"South Sudan","2":"south-sudan","3":"692","4":"2023","5":"3","6":"Africa","_rn_":"3"},{"1":"Central African Republic","2":"central-african-republic","3":"692","4":"2023","5":"4","6":"Africa","_rn_":"4"},{"1":"Liberia","2":"liberia","3":"628","4":"2023","5":"5","6":"Africa","_rn_":"5"},{"1":"Somalia","2":"somalia","3":"563","4":"2023","5":"6","6":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths.100000.live.births"],"name":[3],"type":["int"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Australia","2":"australia","3":"2","4":"2023","5":"191","6":"Australia and Oceania","_rn_":"191"},{"1":"Israel","2":"israel","3":"2","4":"2023","5":"192","6":"Middle East","_rn_":"192"},{"1":"Poland","2":"poland","3":"2","4":"2023","5":"193","6":"Europe","_rn_":"193"},{"1":"Belarus","2":"belarus","3":"1","4":"2023","5":"194","6":"Europe","_rn_":"194"},{"1":"Norway","2":"norway","3":"1","4":"2023","5":"195","6":"Europe","_rn_":"195"},{"1":"Cook Islands","2":"cook-islands","3":"0","4":"2023","5":"196","6":"Australia and Oceania","_rn_":"196"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["slug"],"name":[2],"type":["chr"],"align":["left"]},{"label":["deaths_per_100000"],"name":[3],"type":["int"],"align":["right"]},{"label":["date_of_information"],"name":[4],"type":["int"],"align":["right"]},{"label":["ranking"],"name":[5],"type":["int"],"align":["right"]},{"label":["region"],"name":[6],"type":["chr"],"align":["left"]}],"data":[{"1":"Australia","2":"australia","3":"2","4":"2023","5":"191","6":"Australia and Oceania","_rn_":"191"},{"1":"Israel","2":"israel","3":"2","4":"2023","5":"192","6":"Middle East","_rn_":"192"},{"1":"Poland","2":"poland","3":"2","4":"2023","5":"193","6":"Europe","_rn_":"193"},{"1":"Belarus","2":"belarus","3":"1","4":"2023","5":"194","6":"Europe","_rn_":"194"},{"1":"Norway","2":"norway","3":"1","4":"2023","5":"195","6":"Europe","_rn_":"195"},{"1":"Cook Islands","2":"cook-islands","3":"0","4":"2023","5":"196","6":"Australia and Oceania","_rn_":"196"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <pre><code>## &#39;data.frame&#39;:    196 obs. of  6 variables:
-##  $ name                     : chr  &quot;Nigeria&quot; &quot;Chad&quot; &quot;South Sudan&quot; &quot;Central African Republic&quot; ...
-##  $ slug                     : chr  &quot;nigeria&quot; &quot;chad&quot; &quot;south-sudan&quot; &quot;central-african-republic&quot; ...
-##  $ deaths.100000.live.births: int  993 748 692 692 628 563 521 518 505 494 ...
-##  $ date_of_information      : int  2023 2023 2023 2023 2023 2023 2023 2023 2023 2023 ...
-##  $ ranking                  : int  1 2 3 4 5 6 7 8 9 10 ...
-##  $ region                   : chr  &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
-<pre><code>##      name               slug           deaths.100000.live.births
-##  Length:196         Length:196         Min.   :  0.0            
-##  Class :character   Class :character   1st Qu.: 11.0            
-##  Mode  :character   Mode  :character   Median : 45.5            
-##                                        Mean   :116.1            
-##                                        3rd Qu.:155.0            
-##                                        Max.   :993.0            
-##  date_of_information    ranking          region         
-##  Min.   :2023        Min.   :  1.00   Length:196        
-##  1st Qu.:2023        1st Qu.: 49.75   Class :character  
-##  Median :2023        Median : 98.50   Mode  :character  
-##  Mean   :2023        Mean   : 98.50                     
-##  3rd Qu.:2023        3rd Qu.:147.25                     
-##  Max.   :2023        Max.   :196.00</code></pre>
+##  $ name               : chr  &quot;Nigeria&quot; &quot;Chad&quot; &quot;South Sudan&quot; &quot;Central African Republic&quot; ...
+##  $ slug               : chr  &quot;nigeria&quot; &quot;chad&quot; &quot;south-sudan&quot; &quot;central-african-republic&quot; ...
+##  $ deaths_per_100000  : int  993 748 692 692 628 563 521 518 505 494 ...
+##  $ date_of_information: int  2023 2023 2023 2023 2023 2023 2023 2023 2023 2023 ...
+##  $ ranking            : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ region             : chr  &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
+<pre><code>##      name               slug           deaths_per_100000 date_of_information
+##  Length:196         Length:196         Min.   :  0.0     Min.   :2023       
+##  Class :character   Class :character   1st Qu.: 11.0     1st Qu.:2023       
+##  Mode  :character   Mode  :character   Median : 45.5     Median :2023       
+##                                        Mean   :116.1     Mean   :2023       
+##                                        3rd Qu.:155.0     3rd Qu.:2023       
+##                                        Max.   :993.0     Max.   :2023       
+##     ranking          region         
+##  Min.   :  1.00   Length:196        
+##  1st Qu.: 49.75   Class :character  
+##  Median : 98.50   Mode  :character  
+##  Mean   : 98.50                     
+##  3rd Qu.:147.25                     
+##  Max.   :196.00</code></pre>
 </div>
 <div id="keep-only-required-columns" class="section level3">
 <h3>Keep only required columns</h3>
-<pre class="r"><code>data_1_new &lt;- data_1[, c(&quot;name&quot;, &quot;deaths.1000.live.births&quot;, &quot;region&quot;)]
-data_2_new &lt;- data_2[, c(&quot;name&quot;, &quot;years&quot;, &quot;region&quot;)]
-data_3_new &lt;- data_3[, c(&quot;name&quot;, &quot;deaths.100000.live.births&quot;, &quot;region&quot;)]
+<pre class="r"><code>infant_new &lt;- infant[, c(&quot;name&quot;, &quot;deaths_per_1000&quot;, &quot;region&quot;)]
+life_exp_new &lt;- life_exp[, c(&quot;name&quot;, &quot;years&quot;, &quot;region&quot;)]
+maternal_new &lt;- maternal[, c(&quot;name&quot;, &quot;deaths_per_100000&quot;, &quot;region&quot;)]
 
-head(data_1_new)</code></pre>
+head(infant_new)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["deaths.1000.live.births"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"101.3","3":"South Asia","_rn_":"1"},{"1":"Somalia","2":"83.6","3":"Africa","_rn_":"2"},{"1":"Central African Republic","2":"80.5","3":"Africa","_rn_":"3"},{"1":"Equatorial Guinea","2":"77.4","3":"Africa","_rn_":"4"},{"1":"Sierra Leone","2":"71.2","3":"Africa","_rn_":"5"},{"1":"Niger","2":"64.3","3":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["deaths_per_1000"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"101.3","3":"South Asia","_rn_":"1"},{"1":"Somalia","2":"83.6","3":"Africa","_rn_":"2"},{"1":"Central African Republic","2":"80.5","3":"Africa","_rn_":"3"},{"1":"Equatorial Guinea","2":"77.4","3":"Africa","_rn_":"4"},{"1":"Sierra Leone","2":"71.2","3":"Africa","_rn_":"5"},{"1":"Niger","2":"64.3","3":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<pre class="r"><code>head(data_2_new)</code></pre>
+<pre class="r"><code>head(life_exp_new)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["years"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Monaco","2":"89.8","3":"Europe","_rn_":"1"},{"1":"Singapore","2":"86.7","3":"East and Southeast Asia","_rn_":"2"},{"1":"Macau","2":"85.3","3":"East and Southeast Asia","_rn_":"3"},{"1":"Japan","2":"85.2","3":"East and Southeast Asia","_rn_":"4"},{"1":"Canada","2":"84.2","3":"North America","_rn_":"5"},{"1":"San Marino","2":"84.2","3":"Europe","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<pre class="r"><code>head(data_3_new)</code></pre>
+<pre class="r"><code>head(maternal_new)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["deaths.100000.live.births"],"name":[2],"type":["int"],"align":["right"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Nigeria","2":"993","3":"Africa","_rn_":"1"},{"1":"Chad","2":"748","3":"Africa","_rn_":"2"},{"1":"South Sudan","2":"692","3":"Africa","_rn_":"3"},{"1":"Central African Republic","2":"692","3":"Africa","_rn_":"4"},{"1":"Liberia","2":"628","3":"Africa","_rn_":"5"},{"1":"Somalia","2":"563","3":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["deaths_per_100000"],"name":[2],"type":["int"],"align":["right"]},{"label":["region"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Nigeria","2":"993","3":"Africa","_rn_":"1"},{"1":"Chad","2":"748","3":"Africa","_rn_":"2"},{"1":"South Sudan","2":"692","3":"Africa","_rn_":"3"},{"1":"Central African Republic","2":"692","3":"Africa","_rn_":"4"},{"1":"Liberia","2":"628","3":"Africa","_rn_":"5"},{"1":"Somalia","2":"563","3":"Africa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 <div id="trim-whitespaces" class="section level3">
 <h3>Trim Whitespaces</h3>
-<pre class="r"><code>data_1_new$name &lt;- trimws(data_1_new$name)
-data_1_new$region &lt;- trimws(data_1_new$region)
+<pre class="r"><code>infant_new$name &lt;- trimws(infant_new$name)
+infant_new$region &lt;- trimws(infant_new$region)
 
-data_2_new$name &lt;- trimws(data_2_new$name)
-data_2_new$region &lt;- trimws(data_2_new$region)
+life_exp_new$name &lt;- trimws(life_exp_new$name)
+life_exp_new$region &lt;- trimws(life_exp_new$region)
 
-data_3_new$name &lt;- trimws(data_3_new$name)
-data_3_new$region &lt;- trimws(data_3_new$region)</code></pre>
+maternal_new$name &lt;- trimws(maternal_new$name)
+maternal_new$region &lt;- trimws(maternal_new$region)</code></pre>
 <div id="checking-for-na-values" class="section level4">
 <h4>Checking for NA Values</h4>
 <pre class="r"><code># NA counts per column
-colSums(is.na(data_1_new))</code></pre>
-<pre><code>##                    name deaths.1000.live.births                  region 
-##                       0                       0                       0</code></pre>
-<pre class="r"><code>colSums(is.na(data_2_new))</code></pre>
+colSums(is.na(infant_new))</code></pre>
+<pre><code>##            name deaths_per_1000          region 
+##               0               0               0</code></pre>
+<pre class="r"><code>colSums(is.na(life_exp_new))</code></pre>
 <pre><code>##   name  years region 
 ##      0      0      0</code></pre>
-<pre class="r"><code>colSums(is.na(data_3_new))</code></pre>
-<pre><code>##                      name deaths.100000.live.births                    region 
-##                         0                         0                         0</code></pre>
+<pre class="r"><code>colSums(is.na(maternal_new))</code></pre>
+<pre><code>##              name deaths_per_100000            region 
+##                 0                 0                 0</code></pre>
 </div>
 </div>
 <div id="ensure-numeric-columns-are-numeric" class="section level3">
 <h3>Ensure numeric columns are numeric</h3>
-<pre class="r"><code>data_1_new$deaths.1000.live.births &lt;- as.numeric(data_1_new$deaths.1000.live.births)
-data_2_new$years &lt;- as.numeric(data_2_new$years)
-data_3_new$deaths.100000.live.births &lt;- as.numeric(data_3_new$deaths.100000.live.births)</code></pre>
+<pre class="r"><code>infant_new$deaths.1000.live.births &lt;- as.numeric(infant_new$deaths_per_1000)
+life_exp_new$years &lt;- as.numeric(life_exp_new$years)
+maternal_new$deaths_per_100000 &lt;- as.numeric(maternal_new$deaths_per_100000)</code></pre>
 </div>
-<div id="rename-columns-clean-analysis-ready" class="section level3">
-<h3>Rename columns (clean, analysis-ready)</h3>
-<pre class="r"><code>names(data_1_new) &lt;- c(&quot;country&quot;, &quot;infant_mortality_per_1000&quot;, &quot;region&quot;)
-names(data_2_new) &lt;- c(&quot;country&quot;, &quot;life_expectancy_years&quot;, &quot;region&quot;)
-names(data_3_new) &lt;- c(&quot;country&quot;, &quot;maternal_mortality_per_100k&quot;, &quot;region&quot;)</code></pre>
+<div id="rename-columns" class="section level3">
+<h3>Rename columns</h3>
+<pre class="r"><code>names(infant_new) &lt;- c(&quot;country&quot;, &quot;infant_mortality_per_1000&quot;, &quot;region&quot;)
+names(life_exp_new) &lt;- c(&quot;country&quot;, &quot;life_expectancy_years&quot;, &quot;region&quot;)
+names(maternal_new) &lt;- c(&quot;country&quot;, &quot;maternal_mortality_per_100k&quot;, &quot;region&quot;)</code></pre>
 </div>
 <div id="verify-final-cleaned-structures" class="section level3">
 <h3>Verify final cleaned structures</h3>
-<pre class="r"><code>str(data_1_new)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
+<pre class="r"><code>str(infant_new)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    227 obs. of  4 variables:
 ##  $ country                  : chr  &quot;Afghanistan&quot; &quot;Somalia&quot; &quot;Central African Republic&quot; &quot;Equatorial Guinea&quot; ...
 ##  $ infant_mortality_per_1000: num  101.3 83.6 80.5 77.4 71.2 ...
-##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
-<pre class="r"><code>str(data_2_new)</code></pre>
+##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...
+##  $ NA                       : num  101.3 83.6 80.5 77.4 71.2 ...</code></pre>
+<pre class="r"><code>str(life_exp_new)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
 ##  $ country              : chr  &quot;Monaco&quot; &quot;Singapore&quot; &quot;Macau&quot; &quot;Japan&quot; ...
 ##  $ life_expectancy_years: num  89.8 86.7 85.3 85.2 84.2 84.2 84 84 83.9 83.8 ...
 ##  $ region               : chr  &quot;Europe&quot; &quot;East and Southeast Asia&quot; &quot;East and Southeast Asia&quot; &quot;East and Southeast Asia&quot; ...</code></pre>
-<pre class="r"><code>str(data_3_new)</code></pre>
+<pre class="r"><code>str(maternal_new)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    196 obs. of  3 variables:
 ##  $ country                    : chr  &quot;Nigeria&quot; &quot;Chad&quot; &quot;South Sudan&quot; &quot;Central African Republic&quot; ...
 ##  $ maternal_mortality_per_100k: num  993 748 692 692 628 563 521 518 505 494 ...
@@ -1809,13 +1838,13 @@ names(data_3_new) &lt;- c(&quot;country&quot;, &quot;maternal_mortality_per_100k
 </div>
 <div id="save-cleaned-datasets-rds-csv" class="section level3">
 <h3>Save cleaned datasets (RDS + CSV)</h3>
-<pre class="r"><code>saveRDS(data_1_new, &quot;infant_mortality_clean.rds&quot;)
-saveRDS(data_2_new, &quot;life_expectancy_clean.rds&quot;)
-saveRDS(data_3_new, &quot;maternal_mortality_clean.rds&quot;)
+<pre class="r"><code>saveRDS(infant_new, &quot;infant_mortality_clean.rds&quot;)
+saveRDS(life_exp_new, &quot;life_expectancy_clean.rds&quot;)
+saveRDS(maternal_new, &quot;maternal_mortality_clean.rds&quot;)
 
-write.csv(data_1_new, &quot;infant_mortality_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)
-write.csv(data_2_new, &quot;life_expectancy_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)
-write.csv(data_3_new, &quot;maternal_mortality_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)</code></pre>
+write.csv(infant_new, &quot;infant_mortality_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)
+write.csv(life_exp_new, &quot;life_expectancy_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)
+write.csv(maternal_new, &quot;maternal_mortality_clean.csv&quot;, row.names = FALSE, na = &quot;&quot;)</code></pre>
 </div>
 <div id="re-open-each-file-and-verify-types-using-str" class="section level3">
 <h3>Re-open each file and verify types using str()</h3>
@@ -1826,10 +1855,11 @@ le_rds &lt;- readRDS(&quot;life_expectancy_clean.rds&quot;)
 mmr_rds &lt;- readRDS(&quot;maternal_mortality_clean.rds&quot;)
 
 str(imr_rds)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
+<pre><code>## &#39;data.frame&#39;:    227 obs. of  4 variables:
 ##  $ country                  : chr  &quot;Afghanistan&quot; &quot;Somalia&quot; &quot;Central African Republic&quot; &quot;Equatorial Guinea&quot; ...
 ##  $ infant_mortality_per_1000: num  101.3 83.6 80.5 77.4 71.2 ...
-##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
+##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...
+##  $ NA                       : num  101.3 83.6 80.5 77.4 71.2 ...</code></pre>
 <pre class="r"><code>str(le_rds)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
 ##  $ country              : chr  &quot;Monaco&quot; &quot;Singapore&quot; &quot;Macau&quot; &quot;Japan&quot; ...
@@ -1848,10 +1878,11 @@ le_csv &lt;- read.csv(&quot;life_expectancy_clean.csv&quot;, stringsAsFactors = 
 mmr_csv &lt;- read.csv(&quot;maternal_mortality_clean.csv&quot;, stringsAsFactors = FALSE)
 
 str(imr_csv)</code></pre>
-<pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
+<pre><code>## &#39;data.frame&#39;:    227 obs. of  4 variables:
 ##  $ country                  : chr  &quot;Afghanistan&quot; &quot;Somalia&quot; &quot;Central African Republic&quot; &quot;Equatorial Guinea&quot; ...
 ##  $ infant_mortality_per_1000: num  101.3 83.6 80.5 77.4 71.2 ...
-##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...</code></pre>
+##  $ region                   : chr  &quot;South Asia&quot; &quot;Africa&quot; &quot;Africa&quot; &quot;Africa&quot; ...
+##  $ NA.                      : num  101.3 83.6 80.5 77.4 71.2 ...</code></pre>
 <pre class="r"><code>str(le_csv)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    227 obs. of  3 variables:
 ##  $ country              : chr  &quot;Monaco&quot; &quot;Singapore&quot; &quot;Macau&quot; &quot;Japan&quot; ...
