@@ -8,33 +8,48 @@ output:
 
 
 ```{r}
+# Read Infant Mortality Rate CSV file into a dataframe
 data_1 <- read.csv("Infant mortality rate.csv")
+
+# Read Life Expectancy at Birth CSV file into a dataframe
 data_2 <- read.csv("Life expectancy at birth.csv")
+
+# Read Maternal Mortality Ratio CSV file into a dataframe
 data_3 <- read.csv("Maternal mortality ratio.csv")
 ```
 
 #### Investigating Column Names
 
 ```{r}
-names(data_1)
-names(data_2)
-names(data_3)
+names(data_1)   # Display column names of infant mortality dataset
+names(data_2)   # Display column names of life expectancy dataset
+names(data_3)   # Display column names of maternal mortality dataset
 ```
 
 
 ### Fixing Column Names
 
 ```{r}
+# Read infant mortality CSV file as raw text (line by line)
 raw_lines_infant <- readLines("Infant mortality rate.csv")
+
+# Replace incorrect header with correct column names
 raw_lines_infant[1] <- "name,slug,deaths_per_1000,date_of_information,ranking,region"
+
+# Convert corrected text back into a dataframe
 infant <- read.csv(text = raw_lines_infant)
 ```
 
 
 ```{r}
-raw_lines <- readLines("Maternal mortality ratio.csv")
-raw_lines[1] <- "name,slug,deaths_per_100000,date_of_information,ranking,region"
-maternal <- read.csv(text = raw_lines)
+# Read maternal mortality CSV file as raw text
+raw_lines_maternal <- readLines("Maternal mortality ratio.csv")
+
+# Replace incorrect header with correct column names
+raw_lines_maternal[1] <- "name,slug,deaths_per_100000,date_of_information,ranking,region"
+
+# Convert corrected text back into a dataframe
+maternal <- read.csv(text = raw_lines_maternal)
 ```
 
 
@@ -45,45 +60,50 @@ life_exp <- data_2
 ### Initial Inspection
 
 ```{r}
-head(infant); tail(infant); str(infant); summary(infant)
-head(life_exp); tail(life_exp); str(life_exp); summary(life_exp)
-head(maternal); tail(maternal); str(maternal); summary(maternal)
+# Inspect infant mortality dataset
+head(infant)      # View first few rows
+tail(infant)      # View last few rows
+str(infant)       # View structure and data types
+summary(infant)   # View summary statistics
+```
+
+```{r}
+# Inspect life expectancy dataset
+head(life_exp)
+tail(life_exp)
+str(life_exp)
+summary(life_exp)
+
+```
+
+
+```{r}
+# Inspect maternal mortality dataset
+head(maternal)
+tail(maternal)
+str(maternal)
+summary(maternal)
 ```
 
 
 ### Keep only required columns
 ```{r}
+# Select relevant columns from infant mortality dataset
 infant_new <- infant[, c("name", "deaths_per_1000", "region")]
+
+# Select relevant columns from life expectancy dataset
 life_exp_new <- life_exp[, c("name", "years", "region")]
+
+# Select relevant columns from maternal mortality dataset
 maternal_new <- maternal[, c("name", "deaths_per_100000", "region")]
 
+# Preview datasets to verify
 head(infant_new)
 head(life_exp_new)
 head(maternal_new)
+
 ```
 
-### Trim Whitespaces 
-
-```{r}
-infant_new$name <- trimws(infant_new$name)
-infant_new$region <- trimws(infant_new$region)
-
-life_exp_new$name <- trimws(life_exp_new$name)
-life_exp_new$region <- trimws(life_exp_new$region)
-
-maternal_new$name <- trimws(maternal_new$name)
-maternal_new$region <- trimws(maternal_new$region)
-```
-
-
-#### Checking for NA Values
-
-```{r}
-# NA counts per column
-colSums(is.na(infant_new))
-colSums(is.na(life_exp_new))
-colSums(is.na(maternal_new))
-```
 
 
 ### Ensure numeric columns are numeric
@@ -106,10 +126,12 @@ names(maternal_new) <- c("country", "maternal_mortality_per_100k", "region")
 ### Save cleaned datasets (RDS + CSV)
 
 ```{r}
+# Save cleaned datasets as RDS files
 saveRDS(infant_new, "infant_mortality_clean.rds")
 saveRDS(life_exp_new, "life_expectancy_clean.rds")
 saveRDS(maternal_new, "maternal_mortality_clean.rds")
 
+# Save cleaned datasets as CSV files
 write.csv(infant_new, "infant_mortality_clean.csv", row.names = FALSE, na = "")
 write.csv(life_exp_new, "life_expectancy_clean.csv", row.names = FALSE, na = "")
 write.csv(maternal_new, "maternal_mortality_clean.csv", row.names = FALSE, na = "")
@@ -121,10 +143,12 @@ write.csv(maternal_new, "maternal_mortality_clean.csv", row.names = FALSE, na = 
 #### RDS
 
 ```{r}
+# Read cleaned RDS files
 imr_rds <- readRDS("infant_mortality_clean.rds")
 le_rds <- readRDS("life_expectancy_clean.rds")
 mmr_rds <- readRDS("maternal_mortality_clean.rds")
 
+# Check structure of RDS files
 str(imr_rds)
 str(le_rds)
 str(mmr_rds)
@@ -133,10 +157,12 @@ str(mmr_rds)
 #### CVS
 
 ```{r}
+# Read cleaned CSV files
 imr_csv <- read.csv("infant_mortality_clean.csv", stringsAsFactors = FALSE)
 le_csv <- read.csv("life_expectancy_clean.csv", stringsAsFactors = FALSE)
 mmr_csv <- read.csv("maternal_mortality_clean.csv", stringsAsFactors = FALSE)
 
+# Check structure of CSV files
 str(imr_csv)
 str(le_csv)
 str(mmr_csv)
