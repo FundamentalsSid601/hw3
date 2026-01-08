@@ -54,6 +54,7 @@ maternal <- read.csv(text = raw_lines_maternal)
 
 
 ```{r}
+# no column name correction required
 life_exp <- data_2
 ```
 
@@ -62,7 +63,6 @@ life_exp <- data_2
 ```{r}
 # Inspect infant mortality dataset
 head(infant)      # View first few rows
-tail(infant)      # View last few rows
 str(infant)       # View structure and data types
 summary(infant)   # View summary statistics
 ```
@@ -70,9 +70,8 @@ summary(infant)   # View summary statistics
 ```{r}
 # Inspect life expectancy dataset
 head(life_exp)
-tail(life_exp)
-str(life_exp)
-summary(life_exp)
+str(life_exp)      # View structure and data types
+summary(life_exp)  # View summary statistics
 
 ```
 
@@ -80,9 +79,8 @@ summary(life_exp)
 ```{r}
 # Inspect maternal mortality dataset
 head(maternal)
-tail(maternal)
-str(maternal)
-summary(maternal)
+str(maternal)       # View structure and data types
+summary(maternal)   # View summary statistics
 ```
 
 
@@ -109,14 +107,20 @@ head(maternal_new)
 ### Ensure numeric columns are numeric
 
 ```{r}
+# Convert infant mortality column to numeric
 infant_new$deaths.1000.live.births <- as.numeric(infant_new$deaths_per_1000)
+
+# Convert life expectancy column to numeric
 life_exp_new$years <- as.numeric(life_exp_new$years)
+
+# Convert maternal mortality column to numeric
 maternal_new$deaths_per_100000 <- as.numeric(maternal_new$deaths_per_100000)
 ```
 
 ### Rename columns to more appopriate names
 
 ```{r}
+# Rename Columns
 names(infant_new) <- c("country", "infant_mortality_per_1000", "region")
 names(life_exp_new) <- c("country", "life_expectancy_years", "region")
 names(maternal_new) <- c("country", "maternal_mortality_per_100k", "region")
